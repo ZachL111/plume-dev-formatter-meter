@@ -1,0 +1,17 @@
+{
+  "repo": "plume-dev-formatter-meter",
+  "thresholds": {
+    "signal": 3,
+    "slack": 2,
+    "confidence": 2,
+    "drag": 4,
+    "ship": 175,
+    "watch": 105
+  },
+  "terms": [
+    "change width",
+    "diagnostic quality",
+    "review cost",
+    "safe rewrite"
+  ]
+}
