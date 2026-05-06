@@ -1,0 +1,73 @@
+{
+  "repo": "plume-dev-formatter-meter",
+  "language": "Rust",
+  "category": "Developer tools",
+  "goal": "Build a Rust toolkit that studies formatter behavior through framed sample traffic, with bounds and ordering tests and no network dependency.",
+  "review_model": {
+    "terms": [
+      "change width",
+      "diagnostic quality",
+      "review cost",
+      "safe rewrite"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "change width",
+      "signal": 65,
+      "slack": 26,
+      "drag": 25,
+      "confidence": 68,
+      "score": 149,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "diagnostic quality",
+      "signal": 51,
+      "slack": 46,
+      "drag": 29,
+      "confidence": 88,
+      "score": 149,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "review cost",
+      "signal": 57,
+      "slack": 30,
+      "drag": 18,
+      "confidence": 55,
+      "score": 145,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "safe rewrite",
+      "signal": 60,
+      "slack": 31,
+      "drag": 14,
+      "confidence": 47,
+      "score": 156,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "change width",
+      "signal": 68,
+      "slack": 46,
+      "drag": 8,
+      "confidence": 58,
+      "score": 216,
+      "lane": "ship"
+    }
+  ]
+}

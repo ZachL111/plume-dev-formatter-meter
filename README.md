@@ -1,69 +1,40 @@
 # plume-dev-formatter-meter
 
-`plume-dev-formatter-meter` is a Rust project for Developer tools. It turns build a Rust toolkit that studies formatter behavior through framed sample traffic, with bounds and ordering tests and no network dependency into a small local model with readable fixtures and a direct verification command.
+`plume-dev-formatter-meter` is a Rust project in developer tools. Its focus is to build a Rust toolkit that studies formatter behavior through framed sample traffic, with bounds and ordering tests and no network dependency.
 
-## Reading Plume Dev Formatter Meter
+## Use Case
 
-Start with the README, then open `metadata/project.json` to check the constants behind the examples. After that, `fixtures/cases.csv` shows the compact path and `examples/extended_cases.csv` gives a wider look at the same rule.
+The point is to make a small domain rule concrete enough that a reader can change it and immediately see what broke.
 
-## Purpose
+## Plume Dev Formatter Meter Review Notes
 
-The repository exists to keep a technical idea small enough to reason about. The implementation avoids external dependencies where possible, then uses fixtures to make changes easy to review.
+For a quick review, compare `change width` with `review cost` before reading the middle cases.
 
-## Files Worth Reading
+## Highlights
 
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `Cargo.toml`: Rust package metadata
+- `fixtures/domain_review.csv` adds cases for change width and diagnostic quality.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/plume-dev-formatter-walkthrough.md` walks through the case spread.
+- The Rust code includes a review path for `change width` and `review cost`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## What It Does
+## Code Layout
 
-- Includes extended examples for safe defaults, including `surge` and `degraded`.
-- Documents repeatable output tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## Design Sketch
+The Rust addition stays small enough to inspect in one sitting.
 
-The design is intentionally direct: parse or construct a signal, score it, classify it, and verify the expected branch. This makes the repository useful for studying developer tools behavior without needing a service or database unless the language project itself is SQL. The Rust code keeps ownership and data movement plain, which makes the tests useful for checking both behavior and API shape.
-
-## Setup
-
-The only required setup is the local Rust toolchain. After cloning, stay in the repo root so fixture paths resolve correctly.
-
-## Fixture Notes
-
-The extended cases are not random smoke tests. `degraded` keeps pressure on the review path, while `surge` shows the model when capacity and weight are strong enough to clear the threshold.
-
-## Usage
+## Run The Check
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Regression Path
 
-## Verification
+The same command runs the local verification path. The highest-scoring domain case is `stale` at 216, which lands in `ship`. The most cautious case is `edge` at 145, which lands in `ship`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Future Work
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Next Directions
-
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add one more developer tools fixture that focuses on a malformed or borderline input.
-
-## Limits
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
+This remains a local project with deterministic fixtures. It does not depend on credentials, hosted services, or live data. Future work should add richer malformed inputs before widening the public API.
